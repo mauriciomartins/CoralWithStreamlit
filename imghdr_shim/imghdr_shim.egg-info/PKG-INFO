@@ -1,0 +1,7 @@
+Metadata-Version: 2.4
+Name: imghdr-shim
+Version: 0.1.0
+Summary: Small shim providing imghdr.what for environments missing stdlib imghdr
+Classifier: Programming Language :: Python :: 3
+Dynamic: classifier
+Dynamic: summary
