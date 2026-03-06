@@ -67,16 +67,17 @@ def dashboard(selected_music: pd.DataFrame):
     with col_audio:
             # -------- SELECIONAR Partitura --------
         music_sheet_list = selected_music[["MUSIC_SHEET_FILE_ID"]].dropna().reset_index(drop=True)
+        
         if not music_sheet_list.empty:
             selected_music_sheet_index = st.selectbox(
                 "📜 Escolha a partitura para visualização:",
-                options=selected_music["MUSIC_SHEET_LABEL"]
+                options=selected_music["MUSIC_SHEET_LABEL"].dropna()
             )
             selected_music_sheet = selected_music[selected_music["MUSIC_SHEET_LABEL"] == selected_music_sheet_index]["MUSIC_SHEET_FILE_ID"].iloc[0]
 
         voice = st.selectbox(
                 "🎤 Escolha a voz para audição:",
-                options=selected_music["VOICE_LABEL"],
+                options=selected_music["VOICE_LABEL"].dropna(),
         )
         
         selected_music_audio = selected_music[selected_music["VOICE_LABEL"] == voice]["VOICE_AUDIO_LINK"].iloc[0]
@@ -110,6 +111,9 @@ def render_streamlit(df: pd.DataFrame):
 
     selected_music = df[df["MUSIC"] == musica]
     st.session_state["selected_music"] = selected_music
+    if musicList.empty:
+       st.warning("No data loaded. Please go back to the home page.")
+        
     dashboard(selected_music)
 
 
@@ -119,7 +123,6 @@ def render_streamlit(df: pd.DataFrame):
 def main():
     st.set_page_config(layout="wide")
     if "df" not in st.session_state:
-        st.warning("No data loaded. Please go back to the home page.")
         df = load_data(DATA_URL)
         st.session_state["df"] = df
     render_streamlit(st.session_state["df"])
