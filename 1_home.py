@@ -8,7 +8,15 @@ import pandas as pd
 # =====================================================
 # DATA LOADING
 # =====================================================
-DATA_URL = "https://docs.google.com/spreadsheets/d/1o2ujjDwoHe1lybuOQ54TRrP-jK-cZs8U6glL4dKkiZU/export?format=xlsx"
+
+sheet_id = st.secrets["SHEET_ID"]
+gid = st.secrets["SHEET_GID"]
+base_url = st.secrets["GOOGLE_SHEET_BASE"]
+
+# montar url csv
+DATA_URL = f"{base_url}/{sheet_id}/export?format=xlsx&gid={gid}"
+
+# DATA_URL = "https://docs.google.com/spreadsheets/d/1o2ujjDwoHe1lybuOQ54TRrP-jK-cZs8U6glL4dKkiZU/export?format=xlsx"
 
 
 def load_data(url: str) -> pd.DataFrame: 
